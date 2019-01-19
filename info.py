@@ -115,10 +115,10 @@ def getHardDiskInfo():
 			nombre = '/'
 
 	info = {
-		'nombre': nombre,
+		'nombre': psutil.disk_partitions()[0].device,
 		'total': psutil.disk_usage('/').total / 1048576,
 		'unidad': 'MB',
-		'tipo': tipoD,
+		'tipo': 'HDD',
 		'disponible': psutil.disk_usage('/').free / 1048576
 	}
 
@@ -225,14 +225,25 @@ def getAllInstalledApps(so):
 		return AppName
 	elif so == "Windows":
 		app = []
-		nm = subprocess.check_output(["wmic", "product","get", "name"]).decode("utf-8").strip('\n')
-		name = re.findall(r'[^Name\r\n ].*\w\S',nm)
-		cv = subprocess.check_output(["wmic", "product","get", "IdentifyingNumber"]).decode("utf-8").strip('\n')
-		clave = re.findall(r'[^IdentifyingNumber\r\n ].*\w\S',cv)
-		fi = subprocess.check_output(["wmic", "product","get", "installdate"]).decode("utf-8").strip('\n')
-		fecha = re.findall(r'[^InstallDate\r\n ].*\w\S',fi)
-		vd = subprocess.check_output(["wmic", "product","get", "vendor"]).decode("utf-8").strip('\n')
-		vendor = re.findall(r'[^Vendor\r\n ].*\w\S',vd)
+		try:
+			nm = subprocess.check_output(["wmic", "product","get", "name"]).decode("utf-8").strip('\n')
+			name = re.findall(r'[^Name\r\n ].*\w\S',nm)
+			cv = subprocess.check_output(["wmic", "product","get", "IdentifyingNumber"]).decode("utf-8").strip('\n')
+			clave = re.findall(r'[^IdentifyingNumber\r\n ].*\w\S',cv)
+			fi = subprocess.check_output(["wmic", "product","get", "installdate"]).decode("utf-8").strip('\n')
+			fecha = re.findall(r'[^InstallDate\r\n ].*\w\S',fi)
+			vd = subprocess.check_output(["wmic", "product","get", "vendor"]).decode("utf-8").strip('\n')
+			vendor = re.findall(r'[^Vendor\r\n ].*\w\S',vd)
+		except Exception as e:
+			nm = subprocess.check_output(["wmic", "product","get", "name"]).decode("utf-16").strip('\n')
+			name = re.findall(r'[^Name\r\n ].*\w\S',nm)
+			cv = subprocess.check_output(["wmic", "product","get", "IdentifyingNumber"]).decode("utf-16").strip('\n')
+			clave = re.findall(r'[^IdentifyingNumber\r\n ].*\w\S',cv)
+			fi = subprocess.check_output(["wmic", "product","get", "installdate"]).decode("utf-16").strip('\n')
+			fecha = re.findall(r'[^InstallDate\r\n ].*\w\S',fi)
+			vd = subprocess.check_output(["wmic", "product","get", "vendor"]).decode("utf-16").strip('\n')
+			vendor = re.findall(r'[^Vendor\r\n ].*\w\S',vd)
+
 
 		for x in range(0,len(name)-1):
 			app.append({
