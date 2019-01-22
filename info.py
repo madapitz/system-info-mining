@@ -37,10 +37,10 @@ def getSerialNumber(os):
 
 def getManufacturer(os):
 	if os == 'Linux':
-		return subprocess.check_output(['sudo', 'dmidecode', '-s', 'system-manufacturer' ]).decode("utf-8").strip('\n')
+		return "Canonical Ltd"
 	elif os == 'Windows':
-		manu = subprocess.check_output(['wmic', 'computersystem', 'get', 'manufacturer']).decode("utf-8").strip('\n')
-		return re.findall(r'[^Manufacturer\r\n ].*\w\S',manu)[0]
+		# manu = subprocess.check_output(['wmic', 'computersystem', 'get', 'manufacturer']).decode("utf-8").strip('\n')
+		return "Microsoft"
 
 def getOS():
 	return platform.system()
@@ -192,10 +192,10 @@ def getPrinters(so):
 		prList = []
 		preport = subprocess.check_output(["wmic", "printer","get", "portname"]).decode("utf-8").strip('\n')
 		ports = re.findall(r'[^PortNameXPSPortHRFAXnul\r\n ].*\w\S',preport)
-
+		print(ports)
 		pred = subprocess.check_output(["wmic", "printer","get", "drivername"]).decode("utf-8").strip('\n')
 		drivers = re.findall(r'[^DriverName\r\n ].*\w\S',pred)
-
+		print(drivers)
 		for x in drivers:
 			prList.append({
 				'puerto': 'none',
@@ -235,14 +235,15 @@ def getAllInstalledApps(so):
 			vd = subprocess.check_output(["wmic", "product","get", "vendor"]).decode("utf-8").strip('\n')
 			vendor = re.findall(r'[^Vendor\r\n ].*\w\S',vd)
 		except Exception as e:
-			nm = subprocess.check_output(["wmic", "product","get", "name"]).decode("utf-16").strip('\n')
-			name = re.findall(r'[^Name\r\n ].*\w\S',nm)
-			cv = subprocess.check_output(["wmic", "product","get", "IdentifyingNumber"]).decode("utf-16").strip('\n')
-			clave = re.findall(r'[^IdentifyingNumber\r\n ].*\w\S',cv)
-			fi = subprocess.check_output(["wmic", "product","get", "installdate"]).decode("utf-16").strip('\n')
-			fecha = re.findall(r'[^InstallDate\r\n ].*\w\S',fi)
-			vd = subprocess.check_output(["wmic", "product","get", "vendor"]).decode("utf-16").strip('\n')
-			vendor = re.findall(r'[^Vendor\r\n ].*\w\S',vd)
+			# nm = subprocess.check_output(["wmic", "product","get", "name"]).decode("utf-16").strip('\n')
+			# name = re.findall(r'[^Name\r\n ].*\w\S',nm)
+			# cv = subprocess.check_output(["wmic", "product","get", "IdentifyingNumber"]).decode("utf-16").strip('\n')
+			# clave = re.findall(r'[^IdentifyingNumber\r\n ].*\w\S',cv)
+			# fi = subprocess.check_output(["wmic", "product","get", "installdate"]).decode("utf-16").strip('\n')
+			# fecha = re.findall(r'[^InstallDate\r\n ].*\w\S',fi)
+			# vd = subprocess.check_output(["wmic", "product","get", "vendor"]).decode("utf-16").strip('\n')
+			# vendor = re.findall(r'[^Vendor\r\n ].*\w\S',vd)
+			pass
 
 
 		for x in range(0,len(name)-1):
@@ -306,6 +307,7 @@ def exportGPUInfo():
 
 def exportPrintersInfo():
 	pr = getPrinters(platform.system)
+	print(pr)
 	f = open('info.txt','a')
 	f.write('\nImpresoras:\n')
 	if pr != None:
