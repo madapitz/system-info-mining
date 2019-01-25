@@ -6,6 +6,7 @@ import uuid
 import psutil
 import os
 import netifaces
+import cpuinfo
 if platform.system() == 'Linux':
 	import apt
 
@@ -210,6 +211,19 @@ def getPrinters(so):
 
 		return prList
 
+def getProcessorInfo():
+	proc = cpuinfo.get_cpu_info()
+
+	info = {
+		'nombre': proc['brand'],
+		'fabricante': proc['vendor_id'],
+		'cache': proc['l2_cache_size'],
+		'vreloj': proc['hz_actual'],
+		'nucleos': str(proc['count'])
+	}
+
+	return info
+
 def getAllInstalledApps(so):
 	#2191
 	# nombre, categoria, clave, fecha inst, fabricante
@@ -225,6 +239,10 @@ def getAllInstalledApps(so):
 		return AppName
 	elif so == "Windows":
 		app = []
+		name = []
+		clave = []
+		fecha = []
+		vendor = []
 		try:
 			nm = subprocess.check_output(["wmic", "product","get", "name"]).decode("utf-8").strip('\n')
 			name = re.findall(r'[^Name\r\n ].*\w\S',nm)
@@ -245,14 +263,14 @@ def getAllInstalledApps(so):
 			# vendor = re.findall(r'[^Vendor\r\n ].*\w\S',vd)
 			pass
 
-
-		for x in range(0,len(name)-1):
-			app.append({
-				'nombre':name[x],
-				'clave':clave[x],
-				'fecha': fecha[x],
-				'fabricante': vendor[x]
-				})
+		if len(name) != 0:
+			for x in range(0,len(name)-1):
+				app.append({
+					'nombre':name[x],
+					'clave':clave[x],
+					'fecha': fecha[x],
+					'fabricante': vendor[x]
+					})
 
 		return app
 
@@ -316,6 +334,17 @@ def exportPrintersInfo():
 			f.write('driver: ' + x['driver'] + '\n')
 			f.write('-------\n')
 
+def exportProcessorInfo():
+	proc = getProcessorInfo()
+	f = open('info.txt','a')
+	f.write('\nProcesador:\n')
+	f.write('nombre: ' + proc['nombre'] + '\n')
+	f.write('fabricante: ' + proc['fabricante'] + '\n')
+	f.write('cache: ' + proc['cache'] + '\n')
+	f.write('velocidad de reloj: ' + proc['vreloj'] + '\n')
+	f.write('nucleos: ' + proc['nucleos'] + '\n')
+	f.write('-------\n')
+
 def exportInstalledApps():
 	apps = getAllInstalledApps(platform.system())
 	f = open('info.txt','a')
@@ -338,6 +367,7 @@ def exportAllInfo():
 	exportNetworkI()
 	exportGPUInfo()
 	exportPrintersInfo()
+	exportProcessorInfo()
 	exportInstalledApps()
 
 if __name__ == '__main__':
