@@ -287,6 +287,7 @@ def exportSystemInfo():
 		f.write('sp: ' + getSP() + '\n')
 	f.write('fabricante so: ' + getManufacturer(platform.system()) + '\n')
 	f.write('mac: ' + getMAC() + '\n')
+	f.close()
 
 def exportMemoryInfo():
 	ram = getRAMInfo()
@@ -304,6 +305,7 @@ def exportMemoryInfo():
 	f.write('unidad: ' + hd["unidad"] + '\n')
 	f.write('tipo: ' + hd["tipo"] + '\n')
 	f.write('disponible: ' + str(hd["disponible"]) + '\n')
+	f.close()
 
 def exportNetworkI():
 	ni = getNetworkInterfaces()
@@ -314,6 +316,7 @@ def exportNetworkI():
 		f.write('ip: ' + x['ip'] + '\n')
 		f.write('gateway: ' + x['gateway'] + '\n')
 		f.write('-------\n')
+	f.close()
 
 def exportGPUInfo():
 	gpu = getGPUinfo()
@@ -322,10 +325,10 @@ def exportGPUInfo():
 	f.write('capacidad: ' + gpu['capacidad'] + '\n')
 	f.write('unidad: ' + gpu['unidad'] + '\n')
 	f.write('resolucion: ' + gpu['resolucion'] + '\n')
+	f.close()
 
 def exportPrintersInfo():
 	pr = getPrinters(platform.system)
-	print(pr)
 	f = open('info.txt','a')
 	f.write('\nImpresoras:\n')
 	if pr != None:
@@ -333,6 +336,7 @@ def exportPrintersInfo():
 			f.write('puerto: ' + x['puerto'] + '\n')
 			f.write('driver: ' + x['driver'] + '\n')
 			f.write('-------\n')
+	f.close()
 
 def exportProcessorInfo():
 	proc = getProcessorInfo()
@@ -344,6 +348,7 @@ def exportProcessorInfo():
 	f.write('velocidad de reloj: ' + proc['vreloj'] + '\n')
 	f.write('nucleos: ' + proc['nucleos'] + '\n')
 	f.write('-------\n')
+	f.close()
 
 def exportInstalledApps():
 	apps = getAllInstalledApps(platform.system())
@@ -360,6 +365,7 @@ def exportInstalledApps():
 			f.write('fecha instalacion: ' + x['fecha'] + '\n')
 			f.write('fabricante: ' + x['fabricante'] + '\n')
 			f.write('-------\n')
+	f.close()
 
 def exportAllInfo():
 	exportSystemInfo()
@@ -373,4 +379,5 @@ def exportAllInfo():
 if __name__ == '__main__':
 	#grep " install" /var/log/dpkg.log*
 	#wmic computersystem get model
-	exportAllInfo()
+	# exportAllInfo()
+	pass
