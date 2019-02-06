@@ -253,15 +253,14 @@ def getAllInstalledApps(so):
 			vd = subprocess.check_output(["wmic", "product","get", "vendor"]).decode("utf-8").strip('\n')
 			vendor = re.findall(r'[^Vendor\r\n ].*\w\S',vd)
 		except Exception as e:
-			# nm = subprocess.check_output(["wmic", "product","get", "name"]).decode("utf-16").strip('\n')
-			# name = re.findall(r'[^Name\r\n ].*\w\S',nm)
-			# cv = subprocess.check_output(["wmic", "product","get", "IdentifyingNumber"]).decode("utf-16").strip('\n')
-			# clave = re.findall(r'[^IdentifyingNumber\r\n ].*\w\S',cv)
-			# fi = subprocess.check_output(["wmic", "product","get", "installdate"]).decode("utf-16").strip('\n')
-			# fecha = re.findall(r'[^InstallDate\r\n ].*\w\S',fi)
-			# vd = subprocess.check_output(["wmic", "product","get", "vendor"]).decode("utf-16").strip('\n')
-			# vendor = re.findall(r'[^Vendor\r\n ].*\w\S',vd)
-			pass
+			nm = subprocess.check_output(["wmic", "product","get", "name"]).decode("latin-1", 'ignore').strip('\n')
+			name = re.findall(r'[^Name\r\n ].*\w\S',nm)
+			cv = subprocess.check_output(["wmic", "product","get", "IdentifyingNumber"]).decode("latin-1", 'ignore').strip('\n')
+			clave = re.findall(r'[^IdentifyingNumber\r\n ].*\w\S',cv)
+			fi = subprocess.check_output(["wmic", "product","get", "installdate"]).decode("latin-1", 'ignore').strip('\n')
+			fecha = re.findall(r'[^InstallDate\r\n ].*\w\S',fi)
+			vd = subprocess.check_output(["wmic", "product","get", "vendor"]).decode("latin-1", 'ignore').strip('\n')
+			vendor = re.findall(r'[^Vendor\r\n ].*\w\S',vd)
 
 		if len(name) != 0:
 			for x in range(0,len(name)-1):
@@ -375,9 +374,3 @@ def exportAllInfo():
 	exportPrintersInfo()
 	exportProcessorInfo()
 	exportInstalledApps()
-
-if __name__ == '__main__':
-	#grep " install" /var/log/dpkg.log*
-	#wmic computersystem get model
-	# exportAllInfo()
-	pass
